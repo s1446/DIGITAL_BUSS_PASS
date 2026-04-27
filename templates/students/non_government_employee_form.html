@@ -1,0 +1,229 @@
+<!-- templates/students/non_government_employee_form.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Non-Government Employee Bus Pass Form</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 30px 0;
+        }
+
+        .header {
+            background: #b30000;
+            color: white;
+            padding: 18px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 28px;
+        }
+
+        .form-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            border-top: 5px solid #b30000;
+        }
+
+        h2 {
+            text-align: center;
+            color: #b30000;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-top: 18px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #b30000;
+        }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 35px;
+            background: #b30000;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #8f0000;
+        }
+
+        .back-btn {
+            width: 100%;
+            margin-top: 15px;
+            background: #333;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        .back-btn:hover {
+            background: #111;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .header {
+                font-size: 22px;
+                padding: 15px;
+            }
+
+            .form-container {
+                margin: 20px;
+                padding: 25px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+            }
+
+            input,
+            select,
+            textarea {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            .submit-btn,
+            .back-btn {
+                padding: 12px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    Andhra Pradesh State Road Transport Corporation
+</div>
+
+<div class="form-container">
+
+    <h2>Non-Government Employee Bus Pass Application</h2>
+
+    <p class="subtitle">
+        Fill all required details carefully for successful verification
+    </p>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label>Full Name</label>
+        {{ form.full_name }}
+
+        <label>Phone Number</label>
+        {{ form.phone_number }}
+
+        <label>Aadhaar Number</label>
+        {{ form.aadhaar_number }}
+
+        <label>Gender</label>
+        {{ form.gender }}
+
+        <label>Age</label>
+        {{ form.age }}
+
+        <label>Address</label>
+        {{ form.address }}
+
+        <label>Postal Code</label>
+        {{ form.postal_code }}
+
+        <label>Route From</label>
+        {{ form.route_from }}
+
+        <label>Route To</label>
+        {{ form.route_to }}
+
+        <label>Company Name</label>
+        {{ form.company_name }}
+
+        <label>Employee ID</label>
+        {{ form.employee_id }}
+
+        <label>Work Location</label>
+        {{ form.work_location }}
+
+        <label>Designation</label>
+        {{ form.designation }}
+
+        <label>Profile Photo</label>
+        {{ form.profile_photo }}
+
+        <label>Salary Slip Upload</label>
+        {{ form.salary_slip }}
+
+        <button type="submit" class="submit-btn">
+            Submit Application
+        </button>
+
+        <a href="{% url 'select_pass_type' %}" class="back-btn">
+            Back to Pass Categories
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+</html>

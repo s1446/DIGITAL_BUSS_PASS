@@ -1,0 +1,181 @@
+<!-- templates/payments/mobile_payment.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Payment</title>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            padding: 20px;
+        }
+
+        .main-box {
+            max-width: 500px;
+            margin: 40px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+            border-top: 5px solid #b30000;
+            text-align: center;
+        }
+
+        h2 {
+            color: #b30000;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        .payment-details {
+            background: #fff8f8;
+            border-left: 5px solid #b30000;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .detail-row {
+            margin-bottom: 14px;
+            font-size: 15px;
+        }
+
+        .detail-row strong {
+            display: inline-block;
+            width: 140px;
+            color: #222;
+        }
+
+        .pay-btn {
+            width: 100%;
+            background: #b30000;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .pay-btn:hover {
+            background: #8f0000;
+        }
+
+        .back-btn {
+            display: block;
+            margin-top: 15px;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #111;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .main-box {
+                margin: 20px auto;
+                padding: 25px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+            }
+
+            .detail-row strong {
+                display: block;
+                width: 100%;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-box">
+
+    <h2>Mobile Payment</h2>
+
+    <p class="subtitle">
+        Complete your bus pass payment securely using Razorpay
+    </p>
+
+    <div class="payment-details">
+
+        <div class="detail-row">
+            <strong>Service:</strong>
+            APSRTC Bus Pass
+        </div>
+
+        <div class="detail-row">
+            <strong>Payment Mode:</strong>
+            UPI / Card / Wallet
+        </div>
+
+        <div class="detail-row">
+            <strong>Status:</strong>
+            Ready for Payment
+        </div>
+
+    </div>
+
+    <button id="pay-btn" class="pay-btn">
+        Pay Now
+    </button>
+
+    <a href="{% url 'select_plan' %}" class="back-btn">
+        Back to Select Plan
+    </a>
+
+</div>
+
+<script>
+document.getElementById("pay-btn").onclick = function () {
+
+    var options = {
+        key: "YOUR_RAZORPAY_KEY",
+
+        amount: 50000,
+
+        currency: "INR",
+
+        name: "APSRTC Bus Pass",
+
+        description: "Bus Pass Payment",
+
+        handler: function (response) {
+            window.location.href = "/final-pass/";
+        }
+    };
+
+    var rzp = new Razorpay(options);
+    rzp.open();
+};
+</script>
+
+</body>
+</html>
