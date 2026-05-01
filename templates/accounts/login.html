@@ -95,18 +95,7 @@ body {
     <p class="subtitle">APSRTC Digital Bus Pass Login</p>
 
     <!-- MESSAGES -->
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert 
-                {% if message.tags == 'error' %}
-                    alert-danger
-                {% else %}
-                    alert-success
-                {% endif %}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
+  
 
     <form method="POST">
         {% csrf_token %}

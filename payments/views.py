@@ -10,6 +10,7 @@ from xhtml2pdf import pisa
 from students.models import BusPass
 
 
+
 def payment_verification(request):
     if request.method == 'POST':
         entered_id = request.POST.get('approval_id')
@@ -163,10 +164,6 @@ def is_mobile(request):
         for word in mobile_keywords
     )
 
-from django.http import HttpResponse
-from django.template.loader import render_to_string
-from xhtml2pdf import pisa
-from students.models import BusPass
 
 def download_pass(request):
     bus_pass = BusPass.objects.get(student__user=request.user)

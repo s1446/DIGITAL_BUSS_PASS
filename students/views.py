@@ -84,13 +84,18 @@ def check_status(request):
 
 from django.views.decorators.http import require_POST
 
-@require_POST
+@login_required
 def request_renewal(request):
-    bus_pass = get_object_or_404(
-        BusPass,
+    bus_pass = BusPass.objects.filter(
         student__user=request.user
-    )
+    ).first()
 
+    # ❌ No pass → show message
+    if not bus_pass:
+        messages.error(request, "No bus pass available.")
+        return redirect('student_dashboard')
+
+    # ✅ Renewal process
     bus_pass.renewal_requested = True
     bus_pass.payment_status = 'pending'
     bus_pass.final_pass_generated = False
