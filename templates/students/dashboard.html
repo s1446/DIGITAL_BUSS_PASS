@@ -284,16 +284,27 @@
         </div>
 
         <div class="col-md-4">
-            <div class="option-box">
-                <h4>Pass Renewal</h4>
-                <p>Request renewal for your existing bus pass.</p>
-                <form method="POST" action="{% url 'request_renewal' %}">
-    {% csrf_token %}
-    <button type="submit" class="option-btn">
-        Renew Pass
-    </button>
-</form>
-            </div>
+    <div class="option-box">
+        <h4>Pass Renewal</h4>
+        <p>Request renewal for your existing bus pass.</p>
+
+        {% if bus_pass %}
+            <!-- ✅ SHOW BUTTON -->
+            <form method="POST" action="{% url 'request_renewal' %}">
+                {% csrf_token %}
+                <button type="submit" class="option-btn">
+                    Renew Pass
+                </button>
+            </form>
+        {% else %}
+            <!-- ❌ NO PASS MESSAGE -->
+            <p style="color:red; font-weight:600;">
+                No bus pass available
+            </p>
+        {% endif %}
+
+    </div>
+</div>
         </div>
 
         <div class="col-md-4">

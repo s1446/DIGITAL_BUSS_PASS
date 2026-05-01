@@ -102,7 +102,16 @@ def request_renewal(request):
     bus_pass.save()
 
     return redirect('payment')
+def student_dashboard(request):
+    bus_pass = BusPass.objects.filter(
+        student__user=request.user
+    ).first()
 
+    return render(
+        request,
+        'students/dashboard.html',
+        {'bus_pass': bus_pass}
+    )
 
 def select_pass_type(request):
     return render(
