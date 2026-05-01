@@ -4,6 +4,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from students.models import BusPass
 from django.contrib import messages
 from datetime import date, timedelta
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from xhtml2pdf import pisa
+from students.models import BusPass
 
 
 def payment_verification(request):
@@ -158,3 +162,23 @@ def is_mobile(request):
         word in user_agent
         for word in mobile_keywords
     )
+
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from xhtml2pdf import pisa
+from students.models import BusPass
+
+def download_pass(request):
+    bus_pass = BusPass.objects.get(student__user=request.user)
+
+    html = render_to_string('payments/final_pass.html', {
+        'bus_pass': bus_pass,
+        'selected_plan': request.session.get('selected_plan')
+    })
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="bus_pass.pdf"'
+
+    pisa.CreatePDF(html, dest=response)
+
+    return response

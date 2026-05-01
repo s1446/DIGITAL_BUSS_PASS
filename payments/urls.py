@@ -6,6 +6,8 @@ from .views import (
     select_plan,
     payment_gateway,
     final_pass,
+    download_pass
+
 )
 
 urlpatterns = [
@@ -32,4 +34,8 @@ urlpatterns = [
         final_pass,
         name='final_pass'
     ),
+
+    path('download-pass/',
+     download_pass,
+     name='download_pass'),
 ]

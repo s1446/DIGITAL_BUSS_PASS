@@ -148,7 +148,21 @@
                 align-items: center;
                 text-align: center;
             }
+@media print {
+    body {
+        background: white;
+    }
 
+    .download-section,
+    .footer-note {
+        display: none;
+    }
+
+    .epass-container {
+        box-shadow: none;
+        border: none;
+    }
+}
             .photo-section {
                 width: 100%;
             }
@@ -256,22 +270,32 @@
 
         <div class="download-section">
 
-            {% if bus_pass.pass_pdf %}
-                <a
-                    href="{{ bus_pass.pass_pdf.url }}"
-                    class="download-btn"
-                    download
-                >
-                    Download E-Pass
-                </a>
-            {% else %}
-                <a href="#" class="download-btn">
-                    Download E-Pass
-                </a>
-            {% endif %}
+    {% if bus_pass.payment_status == "completed" %}
 
-        </div>
+        {% if bus_pass.pass_pdf %}
+            <!-- REAL PDF DOWNLOAD -->
+            <a
+                href="{{ bus_pass.pass_pdf.url }}"
+                class="download-btn"
+                download
+            >
+                Download E-Pass
+            </a>
 
+        {% else %}
+            <!-- FALLBACK PRINT DOWNLOAD -->
+            <button onclick="window.print()" class="download-btn">
+                Download / Save as PDF
+            </button>
+        {% endif %}
+
+    {% else %}
+        <p style="color:#888; font-weight:600;">
+            Complete payment to enable download
+        </p>
+    {% endif %}
+
+</div>
         <div class="footer-note">
             This is a digitally verified APSRTC travel pass.
         </div>
