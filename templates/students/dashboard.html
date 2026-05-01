@@ -58,7 +58,33 @@
             font-size: 15px;
             font-weight: 500;
         }
+.scroll-banner {
+    width: 100%;
+    overflow: hidden;
+    background: #b30000;
+    color: white;
+    padding: 10px 0;
+}
 
+.scroll-text {
+    display: inline-block;
+    white-space: nowrap;
+    font-weight: 600;
+    font-size: 16px;
+
+    /* IMPORTANT */
+    animation: scroll-right 15s linear infinite;
+}
+
+/* LEFT → RIGHT */
+@keyframes scroll-right {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
         /* Hero Section */
         .hero-section {
             background: linear-gradient(
@@ -206,6 +232,11 @@
             class="header-logo"
         >
 
+    </div>
+</div>
+<div class="scroll-banner">
+    <div class="scroll-text">
+        🚍 Fast • Secure • Digital Bus Pass System • Easy Renewal • Instant Approval 🚀
     </div>
 </div>
 
