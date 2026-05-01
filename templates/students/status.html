@@ -13,8 +13,6 @@
         body {
             background: #f4f6f9;
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
         }
 
         .header {
@@ -78,25 +76,9 @@
             color: #721c24;
         }
 
-        .payment-btn {
-            display: inline-block;
-            margin-top: 20px;
-            background: #b30000;
-            color: white;
-            padding: 12px 28px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .payment-btn:hover {
-            background: #8f0000;
-            color: white;
-        }
-
         .center-box {
             text-align: center;
-            margin-top: 30px;
+            margin-top: 20px;
         }
 
         .no-data {
@@ -107,28 +89,16 @@
         @media (max-width: 768px) {
             .header {
                 font-size: 22px;
-                padding: 15px;
             }
 
             .main-box {
                 padding: 25px;
-                margin-top: 20px;
-                margin-bottom: 20px;
-            }
-
-            h2 {
-                font-size: 24px;
             }
 
             .detail-row strong {
                 display: block;
                 width: 100%;
                 margin-bottom: 6px;
-            }
-
-            .payment-btn {
-                width: 100%;
-                text-align: center;
             }
         }
     </style>
@@ -156,19 +126,13 @@
                 <strong>Status:</strong>
 
                 {% if bus_pass.status == "approved" %}
-                    <span class="status-badge approved">
-                        Approved
-                    </span>
+                    <span class="status-badge approved">Approved</span>
 
                 {% elif bus_pass.status == "rejected" %}
-                    <span class="status-badge rejected">
-                        Rejected
-                    </span>
+                    <span class="status-badge rejected">Rejected</span>
 
                 {% else %}
-                    <span class="status-badge pending">
-                        Pending
-                    </span>
+                    <span class="status-badge pending">Pending</span>
                 {% endif %}
             </div>
 
@@ -204,43 +168,34 @@
                 {% endif %}
             </div>
 
-            {% if bus_pass.payment_status == "completed" %}
+            <!-- ✅ UPDATED E-PASS STATUS -->
+            <div class="detail-row">
+                <strong>Final E-Pass:</strong>
 
-                <div class="detail-row">
-                    <strong>Final E-Pass:</strong>
-                    Generated
-                </div>
+                {% if bus_pass.payment_status == "completed" %}
+                    <span class="status-badge approved">
+                        Generated
+                    </span>
 
-                {% if bus_pass.pass_pdf %}
-                    <div class="center-box">
-                        <a
-                            href="{{ bus_pass.pass_pdf.url }}"
-                            download
-                            class="payment-btn"
-                        >
-                            Download Final E-Pass
-                        </a>
-                    </div>
+                {% elif bus_pass.status == "approved" %}
+                    <span class="status-badge pending">
+                        Payment Pending
+                    </span>
+
+                {% else %}
+                    <span class="status-badge pending">
+                        Not Available
+                    </span>
                 {% endif %}
+            </div>
 
-            {% else %}
-
-                <div class="detail-row">
-                    <strong>Final E-Pass:</strong>
-                    Not Generated Yet
+            <!-- ✅ DOWNLOAD ONLY IF GENERATED -->
+            {% if bus_pass.payment_status == "completed" and bus_pass.pass_pdf %}
+                <div class="center-box">
+                    <a href="{{ bus_pass.pass_pdf.url }}" download class="btn btn-success">
+                        Download Final E-Pass
+                    </a>
                 </div>
-
-                {% if bus_pass.status == "approved" %}
-                    <div class="center-box">
-                        <a
-                            href="{% url 'payment' %}"
-                            class="payment-btn"
-                        >
-                            Proceed to Payment
-                        </a>
-                    </div>
-                {% endif %}
-
             {% endif %}
 
         {% else %}
