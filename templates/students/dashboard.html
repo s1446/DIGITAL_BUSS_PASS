@@ -256,9 +256,12 @@
             <div class="option-box">
                 <h4>Pass Renewal</h4>
                 <p>Request renewal for your existing bus pass.</p>
-                <a href="{% url 'request_renewal' %}" class="option-btn">
-                    Open
-                </a>
+                <form method="POST" action="{% url 'request_renewal' %}">
+    {% csrf_token %}
+    <button type="submit" class="option-btn">
+        Renew Pass
+    </button>
+</form>
             </div>
         </div>
 

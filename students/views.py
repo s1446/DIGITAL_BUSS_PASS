@@ -82,25 +82,21 @@ def check_status(request):
     )
 
 
+from django.views.decorators.http import require_POST
+
+@require_POST
 def request_renewal(request):
     bus_pass = get_object_or_404(
         BusPass,
         student__user=request.user
     )
 
-    # Keep same approval ID forever
-    # Keep same pass number forever
-
     bus_pass.renewal_requested = True
     bus_pass.payment_status = 'pending'
     bus_pass.final_pass_generated = False
-
     bus_pass.save()
 
-    # Directly move to payment using same pass
-    request.session['bus_pass_id'] = bus_pass.id
-
-    return redirect('select_plan')
+    return redirect('payment')
 
 
 def select_pass_type(request):
