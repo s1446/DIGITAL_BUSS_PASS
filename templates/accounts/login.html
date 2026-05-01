@@ -1,5 +1,3 @@
-<!-- templates/accounts/login.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +11,6 @@
         body {
             font-family: Arial, sans-serif;
             background: #f4f6f9;
-            margin: 0;
             padding: 20px;
         }
 
@@ -30,33 +27,25 @@
         h2 {
             text-align: center;
             color: #b30000;
-            margin-bottom: 12px;
             font-weight: bold;
         }
 
         .subtitle {
             text-align: center;
             color: #666;
-            margin-bottom: 30px;
-            font-size: 15px;
+            margin-bottom: 25px;
         }
 
         label {
-            display: block;
+            margin-top: 15px;
             font-weight: 600;
-            margin-top: 18px;
-            margin-bottom: 8px;
-            color: #333;
         }
 
         input {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ccc;
             border-radius: 8px;
-            font-size: 15px;
-            outline: none;
-            box-sizing: border-box;
+            border: 1px solid #ccc;
         }
 
         input:focus {
@@ -65,15 +54,13 @@
 
         .login-btn {
             width: 100%;
-            margin-top: 35px;
+            margin-top: 30px;
             background: #b30000;
             color: white;
-            border: none;
             padding: 14px;
-            font-size: 16px;
-            font-weight: bold;
+            border: none;
             border-radius: 8px;
-            cursor: pointer;
+            font-weight: bold;
         }
 
         .login-btn:hover {
@@ -82,50 +69,23 @@
 
         .register-link {
             text-align: center;
-            margin-top: 25px;
+            margin-top: 20px;
         }
 
-        .register-link a {
-            color: #b30000;
-            text-decoration: none;
-            font-weight: 600;
+        .password-wrapper {
+            position: relative;
         }
 
-        .register-link a:hover {
-            text-decoration: underline;
+        .toggle-eye {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            cursor: pointer;
         }
 
-        .alert {
-            margin-bottom: 20px;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
-            .login-container {
-                padding: 25px;
-                margin: 20px auto;
-            }
-
-            h2 {
-                font-size: 24px;
-            }
-
-            .subtitle {
-                font-size: 14px;
-            }
-
-            input {
-                padding: 10px;
-                font-size: 14px;
-            }
-
-            .login-btn {
-                padding: 12px;
-                font-size: 15px;
-            }
+        small {
+            color: #666;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -134,31 +94,20 @@
 <div class="login-container">
 
     <h2>Student Login</h2>
-
     <p class="subtitle">
         Login to access your APSRTC Digital Bus Pass account
     </p>
 
+    <!-- MESSAGES -->
     {% if messages %}
         {% for message in messages %}
-            <div class="alert
+            <div class="alert 
                 {% if message.tags == 'error' %}
                     alert-danger
                 {% else %}
                     alert-success
-                {% endif %}
-                alert-dismissible fade show"
-                role="alert">
-
+                {% endif %}">
                 {{ message }}
-
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert"
-                    aria-label="Close">
-                </button>
-
             </div>
         {% endfor %}
     {% endif %}
@@ -166,6 +115,7 @@
     <form method="POST">
         {% csrf_token %}
 
+        <!-- USERNAME -->
         <label>Username</label>
         <input
             type="text"
@@ -173,14 +123,21 @@
             placeholder="Enter your username"
             required
         >
+        <small>Enter your registered username</small>
 
+        <!-- PASSWORD -->
         <label>Password</label>
-        <input
-            type="password"
-            name="password"
-            placeholder="Enter your password"
-            required
-        >
+        <div class="password-wrapper">
+            <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Enter your password"
+                required
+            >
+            <span class="toggle-eye" onclick="togglePassword()">👁️</span>
+        </div>
+        <small>Keep your password secure</small>
 
         <button type="submit" class="login-btn">
             Login
@@ -195,7 +152,12 @@
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function togglePassword() {
+    const field = document.getElementById("password");
+    field.type = field.type === "password" ? "text" : "password";
+}
+</script>
 
 </body>
 </html>

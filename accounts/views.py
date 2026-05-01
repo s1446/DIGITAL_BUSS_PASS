@@ -7,6 +7,12 @@ from students.models import BusPass
 import random
 
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth import login
+from .forms import StudentRegisterForm
+
+
 def register_view(request):
     if request.method == 'POST':
         form = StudentRegisterForm(request.POST)
@@ -22,6 +28,12 @@ def register_view(request):
             login(request, user)
             return redirect('student_dashboard')
 
+        else:
+            messages.error(
+                request,
+                "Please correct the errors below."
+            )
+
     else:
         form = StudentRegisterForm()
 
@@ -31,11 +43,20 @@ def register_view(request):
         {'form': form}
     )
 
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+
 
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '').strip()
+
+        # Basic validation
+        if not username or not password:
+            messages.error(request, "Both fields are required.")
+            return render(request, 'accounts/login.html')
 
         user = authenticate(
             request,
@@ -46,18 +67,15 @@ def login_view(request):
         if user is not None:
             login(request, user)
 
-            messages.success(
-                request,
-                "Login successful."
-            )
+            messages.success(request, "Login successful.")
 
+            # Role-based redirect
             if user.is_superuser:
                 return redirect('admin_dashboard')
 
-            elif hasattr(user, 'role'):
+            if hasattr(user, 'role'):
                 if user.role == 'admin':
                     return redirect('admin_dashboard')
-
                 elif user.role == 'student':
                     return redirect('student_dashboard')
 
@@ -69,11 +87,7 @@ def login_view(request):
                 "Invalid username or password."
             )
 
-    return render(
-        request,
-        'accounts/login.html'
-    )
-
+    return render(request, 'accounts/login.html')
 
 def logout_view(request):
     logout(request)

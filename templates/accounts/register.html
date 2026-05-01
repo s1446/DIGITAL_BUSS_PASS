@@ -1,5 +1,3 @@
-<!-- templates/accounts/register.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +11,6 @@
         body {
             font-family: Arial, sans-serif;
             background: #f4f6f9;
-            margin: 0;
             padding: 20px;
         }
 
@@ -30,33 +27,25 @@
         h2 {
             text-align: center;
             color: #b30000;
-            margin-bottom: 12px;
             font-weight: bold;
         }
 
         .subtitle {
             text-align: center;
             color: #666;
-            margin-bottom: 30px;
-            font-size: 15px;
+            margin-bottom: 25px;
         }
 
         label {
-            display: block;
+            margin-top: 15px;
             font-weight: 600;
-            margin-top: 18px;
-            margin-bottom: 8px;
-            color: #333;
         }
 
         input {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ccc;
             border-radius: 8px;
-            font-size: 15px;
-            outline: none;
-            box-sizing: border-box;
+            border: 1px solid #ccc;
         }
 
         input:focus {
@@ -65,15 +54,13 @@
 
         .register-btn {
             width: 100%;
-            margin-top: 35px;
+            margin-top: 30px;
             background: #b30000;
             color: white;
-            border: none;
             padding: 14px;
-            font-size: 16px;
-            font-weight: bold;
+            border: none;
             border-radius: 8px;
-            cursor: pointer;
+            font-weight: bold;
         }
 
         .register-btn:hover {
@@ -82,50 +69,23 @@
 
         .login-link {
             text-align: center;
-            margin-top: 25px;
+            margin-top: 20px;
         }
 
-        .login-link a {
-            color: #b30000;
-            text-decoration: none;
-            font-weight: 600;
+        .password-wrapper {
+            position: relative;
         }
 
-        .login-link a:hover {
-            text-decoration: underline;
+        .toggle-eye {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            cursor: pointer;
         }
 
-        .alert {
-            margin-bottom: 20px;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
-            .register-container {
-                padding: 25px;
-                margin: 20px auto;
-            }
-
-            h2 {
-                font-size: 24px;
-            }
-
-            .subtitle {
-                font-size: 14px;
-            }
-
-            input {
-                padding: 10px;
-                font-size: 14px;
-            }
-
-            .register-btn {
-                padding: 12px;
-                font-size: 15px;
-            }
+        small {
+            color: #666;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -134,38 +94,66 @@
 <div class="register-container">
 
     <h2>Student Registration</h2>
-
     <p class="subtitle">
         Create your account to apply for APSRTC Digital Bus Pass
     </p>
 
+    <!-- SUCCESS / ERROR MESSAGE -->
     {% if messages %}
         {% for message in messages %}
-            <div class="alert alert-success alert-dismissible fade show">
-                {{ message }}
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert">
-                </button>
-            </div>
+            <div class="alert alert-success">{{ message }}</div>
         {% endfor %}
+    {% endif %}
+
+    <!-- FORM ERRORS -->
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            <ul style="margin:0;">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
     {% endif %}
 
     <form method="POST">
         {% csrf_token %}
 
+        <!-- USERNAME -->
         <label>Username</label>
         {{ form.username }}
+        <small>
+            • Minimum 4 characters<br>
+            • Only letters, numbers, @/./+/-/_ allowed
+        </small>
 
+        <!-- EMAIL -->
         <label>Email</label>
         {{ form.email }}
 
+        <!-- PASSWORD -->
         <label>Password</label>
-        {{ form.password1 }}
+        <div class="password-wrapper">
+            {{ form.password1 }}
+            <span class="toggle-eye" onclick="togglePassword('id_password1')">👁️</span>
+        </div>
+        <small>
+            • At least 8 characters<br>
+            • Cannot be common<br>
+            • Cannot be only numbers
+        </small>
 
+        <!-- CONFIRM PASSWORD -->
         <label>Confirm Password</label>
-        {{ form.password2 }}
+        <div class="password-wrapper">
+            {{ form.password2 }}
+            <span class="toggle-eye" onclick="togglePassword('id_password2')">👁️</span>
+        </div>
+        <small>
+            • Must match password
+        </small>
 
         <button type="submit" class="register-btn">
             Register
@@ -180,7 +168,12 @@
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function togglePassword(id) {
+    const field = document.getElementById(id);
+    field.type = field.type === "password" ? "text" : "password";
+}
+</script>
 
 </body>
 </html>
