@@ -6,7 +6,10 @@ from pathlib import Path
 import os
 import dj_database_url
 
-# Base directory
+# ===============================
+# BASE DIRECTORY
+# ===============================
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -34,6 +37,7 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 # ===============================
 
 INSTALLED_APPS = [
+    # Django Apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,12 +45,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Third-party apps
+    # Third-Party Apps
     'rest_framework',
     'crispy_forms',
     'crispy_bootstrap5',
 
-    # Project apps
+    # Project Apps
     'accounts',
     'students',
     'adminpanel',
@@ -64,7 +68,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
-    # WhiteNoise for static files (Render)
+    # Static files support
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -77,7 +81,7 @@ MIDDLEWARE = [
 
 
 # ===============================
-# URL CONFIG
+# ROOT URL CONFIG
 # ===============================
 
 ROOT_URLCONF = 'buspass_project.urls'
@@ -104,7 +108,7 @@ TEMPLATES = [
 
 
 # ===============================
-# WSGI
+# WSGI APPLICATION
 # ===============================
 
 WSGI_APPLICATION = 'buspass_project.wsgi.application'
@@ -127,14 +131,6 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-
-
-# ===============================
-# CRISPY FORMS
-# ===============================
-
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 
 # ===============================
@@ -169,18 +165,20 @@ USE_TZ = True
 
 
 # ===============================
-# STATIC FILES (Render Ready)
+# STATIC FILES
 # ===============================
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / "static"
+    BASE_DIR / "static",
 ]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_STORAGE = (
+    "whitenoise.storage.CompressedManifestStaticFilesStorage"
+)
 
 
 # ===============================
@@ -192,23 +190,17 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 
 # ===============================
-# EMAIL SETTINGS
+# CRISPY FORMS
 # ===============================
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'your_email@gmail.com')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'your_app_password')
-
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 
 # ===============================
-# DEFAULT FIELD
+# DEFAULT PRIMARY KEY FIELD
 # ===============================
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = 'login'

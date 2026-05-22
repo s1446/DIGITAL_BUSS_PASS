@@ -1,5 +1,7 @@
 # students/views.py
 
+from pyexpat.errors import messages
+
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import StudentProfileForm
 from .forms import GovernmentEmployeeForm
@@ -8,6 +10,7 @@ from .forms import CitizenForm
 from .forms import PWDForm
 
 from .models import BusPass, StudentProfile
+from django.contrib.auth.decorators import login_required
 
 from datetime import date, timedelta
 import random
@@ -69,8 +72,9 @@ def apply_bus_pass(request):
         {'form': form}
     )
 
-
+@login_required
 def check_status(request):
+
     bus_pass = BusPass.objects.filter(
         student__user=request.user
     ).first()
@@ -78,7 +82,9 @@ def check_status(request):
     return render(
         request,
         'students/status.html',
-        {'bus_pass': bus_pass}
+        {
+            'bus_pass': bus_pass
+        }
     )
 
 
@@ -86,22 +92,54 @@ from django.views.decorators.http import require_POST
 
 @login_required
 def request_renewal(request):
+
     bus_pass = BusPass.objects.filter(
         student__user=request.user
     ).first()
 
-    # ❌ No pass → show message
+    # ❌ No bus pass
     if not bus_pass:
-        messages.error(request, "No bus pass available.")
+        messages.error(
+            request,
+            "No bus pass available."
+        )
         return redirect('student_dashboard')
 
-    # ✅ Renewal process
+    # ❌ Payment not completed
+    if bus_pass.payment_status != 'completed':
+        messages.error(
+            request,
+            "Complete payment before renewal."
+        )
+        return redirect('student_dashboard')
+
+    # ❌ Final pass not generated
+    if not bus_pass.final_pass_generated:
+        messages.error(
+            request,
+            "Bus pass not approved yet."
+        )
+        return redirect('student_dashboard')
+
+    # ✅ Renewal request
     bus_pass.renewal_requested = True
+
+    # Reset payment
     bus_pass.payment_status = 'pending'
+
+    # New pass generation required
     bus_pass.final_pass_generated = False
+
     bus_pass.save()
 
+    messages.success(
+        request,
+        "Renewal request submitted successfully."
+    )
+
     return redirect('payment')
+
+    
 def student_dashboard(request):
     bus_pass = BusPass.objects.filter(
         student__user=request.user
